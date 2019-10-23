@@ -276,7 +276,7 @@
  end subroutine microphysics_init
 
 !=================================================================================================================
- subroutine driver_microphysics(configs,mesh,state,time_lev,diag,diag_physics,tend,itimestep,its,ite)
+ subroutine driver_microphysics(configs,mesh,state,time_lev,diag,diag_physics,tend,itimestep,its,ite,errmsg,errflg)
 !=================================================================================================================
 
 !input arguments:
@@ -286,6 +286,10 @@
  integer,intent(in):: time_lev
  integer,intent(in):: itimestep
  integer,intent(in):: its,ite
+
+!out arguments:
+ character(len=*), intent(out):: errmsg
+ integer,          intent(out):: errflg
     
 !inout arguments:
  type(mpas_pool_type),intent(inout):: state
@@ -378,6 +382,7 @@
                   graupel  = graupelnc_p , graupelncv = graupelncv_p , sr       = sr_p      , &
                   re_cloud = recloud_p   , re_ice     = reice_p      , re_snow  = resnow_p  , &
                   has_reqc = has_reqc    , has_reqi   = has_reqi     , has_reqs = has_reqs  , &
+                  errmsg   = errmsg      , errflg   = errflg         ,                        &
                   ids = ids , ide = ide , jds = jds , jde = jde , kds = kds , kde = kde     , &
                   ims = ims , ime = ime , jms = jms , jme = jme , kms = kms , kme = kme     , &
                   its = its , ite = ite , jts = jts , jte = jte , kts = kts , kte = kte       &
