@@ -1,0 +1,396 @@
+[ccpp-arg-table]
+  name = wsm62D
+  type = scheme
+[t]
+  standard_name = air_temperature
+  long_name = air temperature
+  units =  K
+  dimensions = (horizontal_loop_start:horizontal_loop_end,vertical_layer_start:vertical_layer_end)
+  type = real | kind = kind_phys
+  intent = in
+  optional = F 
+[q]
+  standard_name = water_vapor_mixing_ratio
+  long_name = water vapor mixing ratio
+  units = kg kg-1
+  dimensions = (horizontal_loop_start:horizontal_loop_end,vertical_layer_start:vertical_layer_end)
+  type = real | kind = kind_phys
+  intent = in
+  optional = F 
+[qc]
+  standard_name = cloud_condensed_water_mixing_ratio
+  long_name = cloud condensed water mixing ratio
+  units = kg kg-1
+  dimensions = (horizontal_loop_start:horizontal_loop_end,vertical_layer_start:vertical_layer_end)
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[qi]
+  standard_name = ice_water_mixing_ratio
+  long_name = ice water mixing ratio
+  units = kg kg-1
+  dimensions = (horizontal_loop_start:horizontal_loop_end,vertical_layer_start:vertical_layer_end)
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[qr]
+  standard_name = rain_water_mixing_ratio
+  long_name = rain water mixing ratio
+  units = kg kg-1
+  dimensions = (horizontal_loop_start:horizontal_loop_end,vertical_layer_start:vertical_layer_end)
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[qss]
+  standard_name = snow_water_mixing_ratio
+  long_name = snow water mixing ratio
+  units = kg kg-1
+  dimensions = (horizontal_loop_start:horizontal_loop_end,vertical_layer_start:vertical_layer_end)
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[qg]
+  standard_name = graupel_water_mixing_ratio
+  long_name = graupel water mixing ratio
+  units = kg kg-1
+  dimensions = (horizontal_loop_start:horizontal_loop_end,vertical_layer_start:vertical_layer_end)
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[den]
+  standard_name = air_density 
+  long_name = air density
+  units = kg m-3 
+  dimensions = ()
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[p]
+  standard_name = air_pressure 
+  long_name = air pressure
+  units = Pa
+  dimensions = (horizontal_loop_start:horizontal_loop_end,vertical_layer_start:vertical_layer_end)
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[delz]
+  standard_name = layer_thickness
+  long_name = layer thickness
+  units = m
+  dimensions = (horizontal_loop_start:horizontal_loop_end,vertical_layer_start:vertical_layer_end)
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[delt]
+  standard_name = time_step_for_physics
+  long_name = time step for physics
+  units = s
+  dimensions = ()
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[g]
+  standard_name = gravitational_acceleration
+  long_name = gravitational acceleration
+  units = m s-2
+  dimensions = ()
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[cpd]
+  standard_name = specific_heat_of_dry_air_at_constant_pressure
+  long_name = specific heat of dry air at constant pressure
+  units = J kg-1 K-1
+  dimensions = ()
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[cpv]
+  standard_name = cpv
+  long_name = CPV
+  units = J kg-1 K-1
+  dimensions = ()
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[rd]
+  standard_name = gas_constant_for_dry_air
+  long_name = gas constant for dry air
+  units = J kg-1 K-1 
+  dimensions = ()
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[rv]
+  standard_name = gas_constant_for_water_vapor
+  long_name = gas constant for water vapor
+  units = J kg-1 K-1
+  dimensions = ()
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[t0c]
+  standard_name = constant_for_saturation_vapor_pressure_calculation
+  long_name = constant for saturation vapor pressure calculation
+  units = K
+  dimensions = ()
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[ep1]
+  standard_name = ratio_of_vapor_to_dry_air_gas_constants_minus_one
+  long_name = ratio of vapor to dry air gas constants minus one
+  units = none
+  dimensions = ()
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[ep2]
+  standard_name = ratio_of_dry_air_to_water_vapor_gas_constants
+  long_name = ratio of dry air to water vapor gas constants
+  units = none
+  dimensions = ()
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[qmin]
+  standard_name = real_number_bounds
+  long_name = real number bounds
+  units = none
+  dimensions = ()
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[XLS]
+  standard_name = latent_heat_of_sublimation_of_water_at_0C
+  long_name = latent heat of sublimation of water at 0C
+  units = J kg-1
+  dimensions = ()
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[XLV0]
+  standard_name = latent_heat_of_vaporization_of_water_at_0C
+  long_name = latent heat of vaporization of water at 0C
+  units = J kg-1
+  dimensions = ()
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[XLF0]
+  standard_name = latent_heat_of_fusion_of_water_at_0C
+  long_name = latent heat of fusion of water at 0C
+  units = J kg-1
+  dimensions = ()
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[den0]
+  standard_name = density_of_dry_air_at_0C_and_1000mb_pressure 
+  long_name = density of dry air at 0C and 1000mb pressure 
+  units = kg m-3
+  dimensions = ()
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[denr]
+  standard_name = density_of_liquid_water_at_0C
+  long_name = density of liquid water at 0C
+  units = kg m-3
+  dimensions = ()
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[cliq]
+  standard_name = specific_heat_of_liquid_water_at_0C
+  long_name = specific heat of liquid water at 0C
+  units = J kg-1 K-1
+  dimensions = ()
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[cice]
+  standard_name = specific_heat_of_ice_at_0C
+  long_name = specific heat of ice at 0C
+  units = J kg-1 K-1
+  dimensions = ()
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[psat]
+  standard_name = psat
+  long_name = psat
+  units = pa
+  dimensions = ()
+  type = real | kind = kind_phys
+  intent = in
+  optional = F
+[lat]
+  standard_name = second_horiz_index
+  long_name = second horiz index
+  units = none
+  dimensions = ()
+  type = integer
+  intent = in
+  optional = F
+[rain]
+  standard_name = accumulative_explicit_rainfall 
+  long_name = accumulatives explicit rainfall
+  units = mm
+  dimensions = (horizontal_loop_start:horizontal_loop_end)
+  type = real | kind = kind_phys
+  intent = inout
+  optional = F
+[rainncv]
+  standard_name = explicit_rainfall_on_physics_timestep 
+  long_name = explicit rainfall on physics timestep
+  units =  mm
+  dimensions = (horizontal_loop_start:horizontal_loop_end)
+  type = real | kind = kind_phys
+  intent = out
+  optional = F
+[sr]
+  standard_name = snow_plus_graupel_over_rain   
+  long_name = ratio of the sum of snow and graupel to rain on physics timestep
+  units =  none
+  dimensions = (horizontal_loop_start:horizontal_loop_end)
+  type = real | kind = kind_phys
+  intent = out
+  optional = F
+[its]
+  standard_name = horizontal_loop_start
+  long_name = horizontal loop start
+  units = none 
+  dimensions = ()
+  type = integer
+  intent = in
+  optional = F
+[ite]
+  standard_name = horizontal_loop_end
+  long_name = horizontal loop end
+  units = none 
+  dimensions = ()
+  type = integer
+  intent = in
+  optional = F
+[kts]
+  standard_name = vertical_layer_start
+  long_name = vertical layer start
+  units = none 
+  dimensions = ()
+  type = integer
+  intent = in
+  optional = F
+[kte]
+  standard_name = vertical_layer_end
+  long_name = vertical layer end
+  units = none 
+  dimensions = ()
+  type = integer
+  intent = in
+  optional = F
+[snow]
+  standard_name = accumulative_explicit_snowfall 
+  long_name = accumulatives explicit snowfall
+  units = mm
+  dimensions = (horizontal_loop_start:horizontal_loop_end)
+  type = real | kind = kind_phys
+  intent = inout
+  optional = F
+[snowncv]
+  standard_name = explicit_snowfall_on_physics_timestep 
+  long_name = explicit snowfall on physics timestep
+  units =  mm
+  dimensions = (horizontal_loop_start:horizontal_loop_end)
+  type = real | kind = kind_phys
+  intent = out
+  optional = F
+[graupel]
+  standard_name = accumulative_explicit_graupel 
+  long_name = accumulatives explicit graupel
+  units = mm
+  dimensions = (horizontal_loop_start:horizontal_loop_end)
+  type = real | kind = kind_phys
+  intent = inout
+  optional = F
+[graupelncv]
+  standard_name = explicit_graupel_on_physics_timestep 
+  long_name = explicit graupel on physics timestep
+  units =  mm
+  dimensions = (horizontal_loop_start:horizontal_loop_end)
+  type = real | kind = kind_phys
+  intent = out
+  optional = F
+[rainprod2d]
+  standard_name = total_rain_production_per_physics_timestep
+  long_name = total rain production rate per physics timestep
+  units = mm
+  dimensions = (horizontal_loop_start:horizontal_loop_end,vertical_layer_start:vertical_layer_end)
+  type = real | kind = kind_phys
+  intent = out
+  optional = T
+[evapprod2d]
+  standard_name = rain_evapoartion_rate_per_physics_timestep
+  long_name = rain evapoartion rate per physicss timestep
+  units = mm 
+  dimensions = (horizontal_loop_start:horizontal_loop_end,vertical_layer_start:vertical_layer_end)
+  type = real | kind = kind_phys
+  intent = out
+  optional = T
+[errmsg]
+  standard_name = ccpp_error_message
+  long_name = error message for error handling in CCPP
+  units = 1
+  dimensions = ()
+  type = character
+  kind = len=*
+  intent = out
+  optional = F
+[errflg]
+  standard_name = ccpp_error_flag
+  long_name = error flag for error handling in CCPP
+  units = flag
+  dimensions = ()
+  type = integer
+  intent = out
+  optional = F
+[ccpp-arg-table]
+  name = wsm6_init
+  type = scheme
+[errmsg]
+  standard_name = ccpp_error_message
+  long_name = error message for error handling in CCPP
+  units = 1
+  dimensions = ()
+  type = character
+  kind = len=*
+  intent = out
+  optional = F
+[errflg]
+  standard_name = ccpp_error_flag
+  long_name = error flag for error handling in CCPP
+  units = flag
+  dimensions = ()
+  type = integer
+  intent = out
+  optional = F
+[ccpp-arg-table]
+  name = wsm6_finalize
+  type = scheme
+[errmsg]
+  standard_name = ccpp_error_message
+  long_name = error message for error handling in CCPP
+  units = 1
+  dimensions = ()
+  type = character
+  kind = len=*
+  intent = out
+  optional = F
+[errflg]
+  standard_name = ccpp_error_flag
+  long_name = error flag for error handling in CCPP
+  units = flag
+  dimensions = ()
+  type = integer
+  intent = out
+  optional = F
