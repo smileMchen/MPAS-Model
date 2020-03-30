@@ -142,7 +142,6 @@ CONTAINS
   REAL, DIMENSION( ims:ime , jms:jme ), OPTIONAL,                 &
         INTENT(OUT) ::                                 snowncv, graupelncv
 
-!mchen out arguments:
   character(len=*), intent(out)    ::                  errmsg
   integer,          intent(out)    ::                  errflg
 
@@ -160,13 +159,14 @@ CONTAINS
   REAL, DIMENSION( its:ite , kts:kte ) :: delz_hv, p_hv, q_hv, den_hv
   REAL, DIMENSION( its:ite ) ::  rain_hv, rainncv_hv, sr_hv
   REAL, DIMENSION( its:ite ) ::  snow_hv, snowncv_hv, graupel_hv, graupelncv_hv
-  REAL, DIMENSION( its:ite , kts:kte ) ::   t
+  REAL, DIMENSION( its:ite , kts:kte ) ::   t_hv, th_hv, pii_hv
   REAL, DIMENSION( its:ite , kts:kte ) ::   qc_hv, qi_hv
   REAL, DIMENSION( its:ite , kts:kte ) ::   qr_hv, qs_hv, qg_hv
   INTEGER ::               i,j,k
 
 !+---+-----------------------------------------------------------------+
       REAL, DIMENSION(kts:kte):: qv1d, t1d, p1d, qr1d, qs1d, qg1d, dBZ
+      REAL, DIMENSION(kts:kte):: th_hv2, pii_hv2    
       LOGICAL, OPTIONAL, INTENT(IN) :: diagflag
       INTEGER, OPTIONAL, INTENT(IN) :: do_radar_ref
 !+---+-----------------------------------------------------------------+
@@ -183,7 +183,8 @@ CONTAINS
             delz_hv(i,k) = delz(i,k,j)
             p_hv(i,k) = p(i,k,j)
             q_hv(i,k)=q(i,k,j)
-            t(i,k)=th(i,k,j)*pii(i,k,j)
+            pii_hv(i,k)=pii(i,k,j)
+            th_hv(i,k)=th(i,k,j)
             qc_hv(i,k) = qc(i,k,j)
             qi_hv(i,k) = qi(i,k,j)
             qr_hv(i,k) = qr(i,k,j)
@@ -198,7 +199,7 @@ CONTAINS
          ENDDO
          !  Sending array starting locations of optional variables may cause
          !  troubles, so we explicitly change the call.
-         CALL wsm62D(t, q_hv, qc_hv,qi_hv, qr_hv, qs_hv, qg_hv     &
+         CALL wsm62D(t_hv,th_hv,pii_hv,q_hv, qc_hv,qi_hv, qr_hv, qs_hv, qg_hv     &
                     ,den_hv                                        &
                     ,p_hv, delz_hv                                 &
                     ,delt,g, cpd, cpv, rd, rv, t0c                 &
@@ -221,7 +222,7 @@ CONTAINS
                                                                    )
          DO K=kts,kte
          DO I=its,ite
-            th(i,k,j)=t(i,k)/pii(i,k,j)
+            th(i,k,j) = t_hv(i,k)
             qc(i,k,j) = qc_hv(i,k)
             qi(i,k,j) = qi_hv(i,k)
             qr(i,k,j) = qr_hv(i,k)
@@ -244,41 +245,20 @@ CONTAINS
           endif
          ENDDO
 
-!+---+-----------------------------------------------------------------+
-         IF ( PRESENT (diagflag) ) THEN
-         if (diagflag .and. do_radar_ref == 1) then
-            DO I=its,ite
-               DO K=kts,kte
-                  t1d(k)=th(i,k,j)*pii(i,k,j)
-                  p1d(k)=p(i,k,j)
-                  qv1d(k)=q(i,k,j)
-                  qr1d(k)=qr(i,k,j)
-                  qs1d(k)=qs(i,k,j)
-                  qg1d(k)=qg(i,k,j)
-               ENDDO
-               call refl10cm_wsm6 (qv1d, qr1d, qs1d, qg1d,              &
-                       t1d, p1d, dBZ, kts, kte, i, j)
-               do k = kts, kte
-                  refl_10cm(i,k,j) = MAX(-35., dBZ(k))
-               enddo
-            ENDDO
-         endif
-         ENDIF
-
         if (has_reqc.ne.0 .and. has_reqi.ne.0 .and. has_reqs.ne.0) then
           do i=its,ite
             do k=kts,kte
               re_qc(k) = 2.51E-6
               re_qi(k) = 10.01E-6
               re_qs(k) = 25.E-6
-
-              t1d(k)  = th(i,k,j)*pii(i,k,j)
+              th_hv2(k)=th(i,k,j) 
+              pii_hv2(k)=pii(i,k,j) 
               den1d(k)= den(i,k,j)
               qc1d(k) = qc(i,k,j)
               qi1d(k) = qi(i,k,j)
               qs1d(k) = qs(i,k,j)
             enddo
-            call effectRad_wsm6(t1d, qc1d, qi1d, qs1d, den1d,           &
+            call effectRad_wsm6(t1d, pii_hv2,th_hv2,qc1d, qi1d, qs1d, den1d,           &
                                 qmin, t0c, re_qc, re_qi, re_qs,         &
                                 kts, kte, i, j)
             do k=kts,kte
@@ -301,8 +281,8 @@ CONTAINS
   END SUBROUTINE wsm6
 !===================================================================
 !
-  SUBROUTINE wsm62D(t, q                                          &   
-                   ,qc,qi, qr,qss,qg, den, p, delz                        &
+  SUBROUTINE wsm62D(t, th, pii, q                                 &   
+                   ,qc,qi, qr,qss,qg, den, p, delz                &
                    ,delt,g, cpd, cpv, rd, rv, t0c                 &
                    ,ep1, ep2, qmin                                &
                    ,XLS, XLV0, XLF0, den0, denr                   &
@@ -367,15 +347,10 @@ CONTAINS
   INTEGER,      INTENT(IN   )    ::   its,ite, kts,kte,  &
                                       lat
   REAL, DIMENSION( its:ite , kts:kte ), INTENT(IN) ::  den, p, delz 
-  REAL, DIMENSION( its:ite , kts:kte ),                           &
-        INTENT(INOUT) ::                                          &
-                                                               t
-  REAL, DIMENSION( its:ite , kts:kte ),                        &
-        INTENT(INOUT) ::                                          &
-                                                             qc,qi
-  REAL, DIMENSION( its:ite , kts:kte ),                        &
-        INTENT(INOUT) ::                                          &
-                                                             qr,qss,qg
+  REAL, DIMENSION( its:ite , kts:kte ), INTENT(IN) ::  th, pii    
+  REAL, DIMENSION( its:ite , kts:kte ), INTENT(OUT) :: t
+  REAL, DIMENSION( its:ite , kts:kte ), INTENT(INOUT) ::  qc,qi
+  REAL, DIMENSION( its:ite , kts:kte ), INTENT(INOUT) ::  qr,qss,qg
 
   REAL, DIMENSION( its:ite , kts:kte ), INTENT(INOUT) ::     q 
 
@@ -411,7 +386,6 @@ CONTAINS
                                                       evapprod2d
 #endif
 
-!mchen out arguments:
   character(len=*), intent(out)    ::                  errmsg
   integer,          intent(out)    ::                  errflg
 
@@ -539,6 +513,7 @@ CONTAINS
           qi(i,k) = max(qi(i,k),0.0)
           qss(i,k) = max(qss(i,k),0.0)
           qg(i,k) = max(qg(i,k),0.0)
+          t(i,k)=th(i,k)*pii(i,k)        
         enddo
       enddo
 !
@@ -1536,6 +1511,11 @@ CONTAINS
         enddo
       enddo
       enddo                  ! big loops
+      do k = kts, kte
+        do i = its, ite
+          t(i,k) = t(i,k)/pii(i,k)               
+        enddo
+      enddo
 
 #ifdef WRF_CHEM
       rainprod2d = praut+pracw+praci+psaci+pgaci+psacw+pgacw+paacw+psaut
@@ -2636,7 +2616,7 @@ CONTAINS
 !+---+-----------------------------------------------------------------+
 
 !-----------------------------------------------------------------------
-     subroutine effectRad_wsm6 (t, qc, qi, qs, rho, qmin, t0c,        &
+     subroutine effectRad_wsm6 (t, pii, th, qc, qi, qs, rho, qmin, t0c,        &
                                 re_qc, re_qi, re_qs, kts, kte, ii, jj)
 
 !-----------------------------------------------------------------------
@@ -2654,7 +2634,8 @@ CONTAINS
       integer, intent(in) :: kts, kte, ii, jj
       real, intent(in) :: qmin
       real, intent(in) :: t0c
-      real, dimension( kts:kte ), intent(in)::  t
+      real, dimension( kts:kte ), intent(out)::  t        
+      real, dimension( kts:kte ), intent(in)::  th, pii    
       real, dimension( kts:kte ), intent(in)::  qc
       real, dimension( kts:kte ), intent(in)::  qi
       real, dimension( kts:kte ), intent(in)::  qs
@@ -2686,6 +2667,10 @@ CONTAINS
       has_qc = .false.
       has_qi = .false.
       has_qs = .false.
+
+      do k = kts, kte
+         t(k)  = th(k)*pii(k)
+      enddo
 
       do k = kts, kte
         ! for cloud
