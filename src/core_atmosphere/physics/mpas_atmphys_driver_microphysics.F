@@ -19,7 +19,8 @@
 !wrf physics:
  use module_mp_kessler
  use module_mp_thompson
- use module_mp_wsm6
+!mchen use module_mp_wsm6
+ use mp_wsm6
 
  implicit none
  private
