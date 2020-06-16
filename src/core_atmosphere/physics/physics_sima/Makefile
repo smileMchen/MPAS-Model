@@ -6,7 +6,7 @@ dummy:
 	echo "****** compiling physics_sima ******"
 
 OBJS = \
-	mp_wsm6.o     \
+	module_mp_wsm6.o     \
 	wsm6_run.o     \
 	module_mp_radar.o
 
@@ -14,7 +14,7 @@ physics_sima: $(OBJS)
 	ar -ru ./../libphys.a $(OBJS)
 
 # DEPENDENCIES:
-mp_wsm6.o: \
+module_mp_wsm6.o: \
 	wsm6_run.o     \
 	module_mp_radar.o
 

@@ -7,7 +7,7 @@
 #  define VSQRT vsqrt
 #endif
 
-MODULE mp_wsm6
+MODULE wsm6_run
    
    use module_mp_radar 
 
@@ -15,7 +15,7 @@ MODULE mp_wsm6
 
    PUBLIC :: wsm6_run_init
    PUBLIC :: wsm6_run_finalize
-   PUBLIC :: wsm62D
+   PUBLIC :: mp_wsm6_run
 !
    REAL, PARAMETER, PRIVATE :: dtcldcr     = 120. ! maximum time step for minor loops
    REAL, PARAMETER, PRIVATE :: n0r = 8.e6         ! intercept parameter rain
@@ -61,13 +61,14 @@ MODULE mp_wsm6
 contains
 !-------------------------------------------------------------------------------
 !-------------------------------------------------------------------------------
-  SUBROUTINE wsm62D(t, th, pii, q                                 &   
+  SUBROUTINE mp_wsm6_run(t, th, pii, q                                 &   
                    ,qc,qi, qr,qss,qg, den, p, delz                &
+                   ,has_reqc, has_reqi, has_reqs                  &  
+                   ,re_cloud, re_snow, re_ice                     &
                    ,delt,g, cpd, cpv, rd, rv, t0c                 &
                    ,ep1, ep2, qmin                                &
                    ,XLS, XLV0, XLF0, den0, denr                   &
                    ,cliq,cice,psat                                &
-!mc                   ,lat                                           &
                    ,rain,rainncv                                  &
                    ,sr                                            &
                    ,its,ite, kts,kte                              &
@@ -121,14 +122,15 @@ contains
 !
 !  INTEGER,      INTENT(IN   )    ::   ids,ide, jds,jde, kds,kde , &
 !                                      ims,ime, jms,jme, kms,kme , &
-!mc  INTEGER,      INTENT(IN   )    ::   its,ite, kts,kte,  &
-!mc                                      lat
+!
   INTEGER,      INTENT(IN   )    ::   its,ite, kts,kte
   REAL, DIMENSION( its:ite , kts:kte ), INTENT(IN) ::  den, p, delz 
   REAL, DIMENSION( its:ite , kts:kte ), INTENT(IN) ::  th, pii    
   REAL, DIMENSION( its:ite , kts:kte ), INTENT(OUT) :: t
   REAL, DIMENSION( its:ite , kts:kte ), INTENT(INOUT) ::  qc,qi
   REAL, DIMENSION( its:ite , kts:kte ), INTENT(INOUT) ::  qr,qss,qg
+  REAL, DIMENSION( its:ite , kts:kte ), INTENT(OUT)   :: re_cloud,re_snow,re_ice
+  INTEGER, INTENT(IN)::  has_reqc,  has_reqi, has_reqs
 
   REAL, DIMENSION( its:ite , kts:kte ), INTENT(INOUT) ::     q 
 
@@ -168,6 +170,10 @@ contains
   integer,          intent(out)    ::                  errflg
 
 ! LOCAL VAR
+  REAL, DIMENSION(kts:kte):: den1d, qc1d, qs1d, qi1d
+  REAL, DIMENSION(kts:kte):: th_hv2, pii_hv2
+  REAL, DIMENSION(kts:kte):: re_qc, re_qi, re_qs
+
   REAL, DIMENSION( its:ite , kts:kte , 3) ::                      &
                                                               rh, &
                                                               qs, &
@@ -1299,8 +1305,33 @@ contains
       rainprod2d = praut+pracw+praci+psaci+pgaci+psacw+pgacw+paacw+psaut
       evapprod2d = -(prevp+psevp+pgevp+psdep+pgdep)
 #endif
+!
+! effectRad_wsm6
+       IF(has_reqc.ne.0 .and. has_reqi.ne.0 .and. has_reqs.ne.0) THEN
+          do i=its,ite
+            do k=kts,kte
+              re_qc(k)    = 2.51E-6
+              re_qi(k)    = 10.01E-6
+              re_qs(k)    = 25.E-6
+              th_hv2(k)   = t(i,k)
+              pii_hv2(k)  = pii(i,k)
+              den1d(k)    = den(i,k)
+              qc1d(k)     = qc(i,k)
+              qi1d(k)     = qi(i,k)
+              qs1d(k)     = qss(i,k)
+            enddo
+            call effectRad_wsm6(pii_hv2,th_hv2,qc1d, qi1d, qs1d, den1d,           &
+                                qmin, t0c, re_qc, re_qi, re_qs,         &
+                                kts, kte)
+            do k=kts,kte
+              re_cloud(i,k) = MAX(2.51E-6,  MIN(re_qc(k),  50.E-6))
+              re_ice(i,k)   = MAX(10.01E-6, MIN(re_qi(k), 125.E-6))
+              re_snow(i,k)  = MAX(25.E-6,   MIN(re_qs(k), 999.E-6))
+            enddo
+          enddo
+       ENDIF     ! has_reqc, etc...
 
-  END SUBROUTINE wsm62d
+  END SUBROUTINE mp_wsm6_run
 !> \section arg_table_wsm6_init  Argument Table
 !! \htmlinclude arg_table_wsm6_init.html
 !!
@@ -2395,8 +2426,8 @@ contains
 !+---+-----------------------------------------------------------------+
 
 !-----------------------------------------------------------------------
-     subroutine effectRad_wsm6 (t, pii, th, qc, qi, qs, rho, qmin, t0c,        &
-                                re_qc, re_qi, re_qs, kts, kte, ii, jj)
+     subroutine effectRad_wsm6 (pii, th, qc, qi, qs, rho, qmin, t0c,        &
+                                re_qc, re_qi, re_qs, kts, kte)
 
 !-----------------------------------------------------------------------
 !  Compute radiation effective radii of cloud water, ice, and snow for 
@@ -2410,10 +2441,9 @@ contains
       implicit none
 
 !..Sub arguments
-      integer, intent(in) :: kts, kte, ii, jj
+      integer, intent(in) :: kts, kte
       real, intent(in) :: qmin
       real, intent(in) :: t0c
-      real, dimension( kts:kte ), intent(out)::  t        
       real, dimension( kts:kte ), intent(in)::  th, pii    
       real, dimension( kts:kte ), intent(in)::  qc
       real, dimension( kts:kte ), intent(in)::  qi
@@ -2425,6 +2455,7 @@ contains
 !..Local variables
       integer:: i,k
       integer :: inu_c
+      real, dimension( kts:kte )::  t
       real, dimension( kts:kte ):: ni
       real, dimension( kts:kte ):: rqc
       real, dimension( kts:kte ):: rqi

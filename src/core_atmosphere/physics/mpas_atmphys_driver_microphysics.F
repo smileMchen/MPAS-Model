@@ -20,7 +20,7 @@
  use module_mp_kessler
  use module_mp_thompson
 !mchen use module_mp_wsm6
- use mp_wsm6
+ use module_mp_wsm6
 
  implicit none
  private
