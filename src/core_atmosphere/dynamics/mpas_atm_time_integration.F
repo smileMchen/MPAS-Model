@@ -230,6 +230,10 @@ module atm_time_integration
       real (kind=RKIND)  :: time_dyn_step
       logical, parameter :: debug = .false.
 
+      character(len=StrKIND)   ::                                  errmsg
+      integer                  ::                                  errflg
+
+
 
       !
       ! Retrieve configuration options
@@ -1652,7 +1656,7 @@ module atm_time_integration
 !$OMP PARALLEL DO
             do thread=1,nThreads
                call driver_microphysics ( block % configs, mesh, state, 2, diag, diag_physics, tend, itimestep, &
-                                          cellSolveThreadStart(thread), cellSolveThreadEnd(thread))
+                                          cellSolveThreadStart(thread), cellSolveThreadEnd(thread), errmsg, errflg)
             end do
 !$OMP END PARALLEL DO
             call mpas_timer_stop('microphysics')
