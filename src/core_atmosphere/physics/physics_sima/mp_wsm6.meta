@@ -107,7 +107,7 @@
   optional = F
 [cpv]
   standard_name = cpv
-  long_name = specifics heat of water vapor at constant volume
+  long_name = specific heat of water vapor at constant volume
   units = J kg-1 K-1
   dimensions = ()
   type = real | kind = kind_phys
