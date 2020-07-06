@@ -5,7 +5,7 @@
   standard_name = air_temperature
   long_name = air temperature
   units =  K
-  dimensions = (horizontal_loop_begin:horizontal_loop_end,vertical_layer_begin:vertical_layer_end)
+  dimensions = (horizontal_begin:horizontal_end,vertical_layer_dimension)
   type = real | kind = kind_phys
   intent = in
   optional = F 
@@ -13,7 +13,7 @@
   standard_name = water_vapor_mixing_ratio
   long_name = water vapor mixing ratio
   units = kg kg-1
-  dimensions = (horizontal_loop_begin:horizontal_loop_end,vertical_layer_begin:vertical_layer_end)
+  dimensions = (horizontal_begin:horizontal_end,vertical_layer_dimension)
   type = real | kind = kind_phys
   intent = in
   optional = F 
@@ -21,7 +21,7 @@
   standard_name = cloud_condensed_water_mixing_ratio
   long_name = cloud condensed water mixing ratio
   units = kg kg-1
-  dimensions = (horizontal_loop_begin:horizontal_loop_end,vertical_layer_begin:vertical_layer_end)
+  dimensions = (horizontal_begin:horizontal_end,vertical_layer_dimension)
   type = real | kind = kind_phys
   intent = in
   optional = F
@@ -29,7 +29,7 @@
   standard_name = ice_water_mixing_ratio
   long_name = ice water mixing ratio
   units = kg kg-1
-  dimensions = (horizontal_loop_begin:horizontal_loop_end,vertical_layer_begin:vertical_layer_end)
+  dimensions = (horizontal_begin:horizontal_end,vertical_layer_dimension)
   type = real | kind = kind_phys
   intent = in
   optional = F
@@ -37,7 +37,7 @@
   standard_name = rain_water_mixing_ratio
   long_name = rain water mixing ratio
   units = kg kg-1
-  dimensions = (horizontal_loop_begin:horizontal_loop_end,vertical_layer_begin:vertical_layer_end)
+  dimensions = (horizontal_begin:horizontal_end,vertical_layer_dimension)
   type = real | kind = kind_phys
   intent = in
   optional = F
@@ -45,7 +45,7 @@
   standard_name = snow_water_mixing_ratio
   long_name = snow water mixing ratio
   units = kg kg-1
-  dimensions = (horizontal_loop_begin:horizontal_loop_end,vertical_layer_begin:vertical_layer_end)
+  dimensions = (horizontal_begin:horizontal_end,vertical_layer_dimension)
   type = real | kind = kind_phys
   intent = in
   optional = F
@@ -53,7 +53,7 @@
   standard_name = graupel_water_mixing_ratio
   long_name = graupel water mixing ratio
   units = kg kg-1
-  dimensions = (horizontal_loop_begin:horizontal_loop_end,vertical_layer_begin:vertical_layer_end)
+  dimensions = (horizontal_begin:horizontal_end,vertical_layer_dimension)
   type = real | kind = kind_phys
   intent = in
   optional = F
@@ -69,7 +69,7 @@
   standard_name = air_pressure 
   long_name = air pressure
   units = Pa
-  dimensions = (horizontal_loop_begin:horizontal_loop_end,vertical_layer_begin:vertical_layer_end)
+  dimensions = (horizontal_begin:horizontal_end,vertical_layer_dimension)
   type = real | kind = kind_phys
   intent = in
   optional = F
@@ -77,7 +77,7 @@
   standard_name = layer_thickness
   long_name = layer thickness
   units = m
-  dimensions = (horizontal_loop_begin:horizontal_loop_end,vertical_layer_begin:vertical_layer_end)
+  dimensions = (horizontal_begin:horizontal_end,vertical_layer_dimension)
   type = real | kind = kind_phys
   intent = in
   optional = F
@@ -107,7 +107,7 @@
   optional = F
 [cpv]
   standard_name = cpv
-  long_name = CPV
+  long_name = specifics heat of water vapor at constant volume
   units = J kg-1 K-1
   dimensions = ()
   type = real | kind = kind_phys
@@ -225,19 +225,11 @@
   type = real | kind = kind_phys
   intent = in
   optional = F
-[lat]
-  standard_name = second_horiz_index
-  long_name = second horiz index
-  units = none
-  dimensions = ()
-  type = integer
-  intent = in
-  optional = F
 [rain]
   standard_name = accumulative_explicit_rainfall 
   long_name = accumulatives explicit rainfall
   units = mm
-  dimensions = (horizontal_loop_begin:horizontal_loop_end)
+  dimensions = (horizontal_begin:horizontal_end)
   type = real | kind = kind_phys
   intent = inout
   optional = F
@@ -245,7 +237,7 @@
   standard_name = explicit_rainfall_on_physics_timestep 
   long_name = explicit rainfall on physics timestep
   units =  mm
-  dimensions = (horizontal_loop_begin:horizontal_loop_end)
+  dimensions = (horizontal_begin:horizontal_end)
   type = real | kind = kind_phys
   intent = out
   optional = F
@@ -253,12 +245,12 @@
   standard_name = snow_plus_graupel_over_rain   
   long_name = ratio of the sum of snow and graupel to rain on physics timestep
   units =  none
-  dimensions = (horizontal_loop_begin:horizontal_loop_end)
+  dimensions = (horizontal_begin:horizontal_end)
   type = real | kind = kind_phys
   intent = out
   optional = F
 [its]
-  standard_name = horizontal_loop_begin
+  standard_name = horizontal_begin
   long_name = horizontal loop begin
   units = none 
   dimensions = ()
@@ -266,24 +258,16 @@
   intent = in
   optional = F
 [ite]
-  standard_name = horizontal_loop_end
+  standard_name = horizontal_end
   long_name = horizontal loop end
   units = none 
   dimensions = ()
   type = integer
   intent = in
   optional = F
-[kts]
-  standard_name = vertical_layer_begin
-  long_name = vertical layer begin
-  units = none 
-  dimensions = ()
-  type = integer
-  intent = in
-  optional = F
 [kte]
-  standard_name = vertical_layer_end
-  long_name = vertical layer end
+  standard_name = vertical_layer_dimension
+  long_name = vertical layer dimension
   units = none 
   dimensions = ()
   type = integer
@@ -293,7 +277,7 @@
   standard_name = accumulative_explicit_snowfall 
   long_name = accumulatives explicit snowfall
   units = mm
-  dimensions = (horizontal_loop_begin:horizontal_loop_end)
+  dimensions = (horizontal_begin:horizontal_end)
   type = real | kind = kind_phys
   intent = inout
   optional = F
@@ -301,7 +285,7 @@
   standard_name = explicit_snowfall_on_physics_timestep 
   long_name = explicit snowfall on physics timestep
   units =  mm
-  dimensions = (horizontal_loop_begin:horizontal_loop_end)
+  dimensions = (horizontal_begin:horizontal_end)
   type = real | kind = kind_phys
   intent = out
   optional = F
@@ -309,7 +293,7 @@
   standard_name = accumulative_explicit_graupel 
   long_name = accumulatives explicit graupel
   units = mm
-  dimensions = (horizontal_loop_begin:horizontal_loop_end)
+  dimensions = (horizontal_begin:horizontal_end)
   type = real | kind = kind_phys
   intent = inout
   optional = F
@@ -317,7 +301,7 @@
   standard_name = explicit_graupel_on_physics_timestep 
   long_name = explicit graupel on physics timestep
   units =  mm
-  dimensions = (horizontal_loop_begin:horizontal_loop_end)
+  dimensions = (horizontal_begin:horizontal_end)
   type = real | kind = kind_phys
   intent = out
   optional = F
@@ -325,7 +309,7 @@
   standard_name = total_rain_production_per_physics_timestep
   long_name = total rain production rate per physics timestep
   units = mm
-  dimensions = (horizontal_loop_begin:horizontal_loop_end,vertical_layer_begin:vertical_layer_end)
+  dimensions = (horizontal_begin:horizontal_end,vertical_layer_dimension)
   type = real | kind = kind_phys
   intent = out
   optional = T
@@ -333,7 +317,7 @@
   standard_name = rain_evapoartion_rate_per_physics_timestep
   long_name = rain evapoartion rate per physicss timestep
   units = mm 
-  dimensions = (horizontal_loop_begin:horizontal_loop_end,vertical_layer_begin:vertical_layer_end)
+  dimensions = (horizontal_begin:horizontal_end,vertical_layer_dimension)
   type = real | kind = kind_phys
   intent = out
   optional = T

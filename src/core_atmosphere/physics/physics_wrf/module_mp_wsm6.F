@@ -167,7 +167,7 @@ CONTAINS
                     ,cliq,cice,psat                                &
                     ,rain_hv,rainncv_hv                            &
                     ,sr_hv                                         &
-                    ,its,ite, kts,kte                              &
+                    ,its,ite, kte                              &
                     ,snow_hv,snowncv_hv                            &
                     ,graupel_hv,graupelncv_hv                      &
 #ifdef WRF_CHEM

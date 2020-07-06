@@ -71,7 +71,7 @@ contains
                    ,cliq,cice,psat                                &
                    ,rain,rainncv                                  &
                    ,sr                                            &
-                   ,its,ite, kts,kte                              &
+                   ,its,ite, kte                              &
                    ,snow,snowncv                                  &
                    ,graupel,graupelncv                            &
 #ifdef WRF_CHEM
@@ -123,7 +123,8 @@ contains
 !  INTEGER,      INTENT(IN   )    ::   ids,ide, jds,jde, kds,kde , &
 !                                      ims,ime, jms,jme, kms,kme , &
 !
-  INTEGER,      INTENT(IN   )    ::   its,ite, kts,kte
+  INTEGER,      INTENT(IN   )    ::   its,ite, kte
+  INTEGER,      parameter        ::  kts=1
   REAL, DIMENSION( its:ite , kts:kte ), INTENT(IN) ::  den, p, delz 
   REAL, DIMENSION( its:ite , kts:kte ), INTENT(IN) ::  th, pii    
   REAL, DIMENSION( its:ite , kts:kte ), INTENT(OUT) :: t
